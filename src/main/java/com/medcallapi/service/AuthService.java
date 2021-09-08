@@ -67,7 +67,7 @@ public class AuthService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(userMail);
         mailMessage.setSubject("Confirmation Link!");
-        mailMessage.setText("Thank you for registering. Please click on the below link to activate your account. http://localhost:8080/api/register/confirm?token="+token);
+        mailMessage.setText("Thank you for registering. Please click on the below link to activate your account. http://localhost:4200/register/confirm?token="+token);
 
         emailSenderService.sendEmail(mailMessage);
     }
