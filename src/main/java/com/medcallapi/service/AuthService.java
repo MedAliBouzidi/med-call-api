@@ -1,18 +1,19 @@
 package com.medcallapi.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.medcallapi.GlobalVariable;
 import com.medcallapi.entity.ConfirmationToken;
 import com.medcallapi.entity.UserEntity;
 import com.medcallapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class AuthService {
@@ -23,16 +24,18 @@ public class AuthService {
     @Autowired
     private EmailService emailSenderService;
 
-    public ObjectNode register(UserEntity newUser) {
+    public Map<String, String> register(UserEntity newUser) {
         UserEntity userByUsername = userRepository.findByUsername(newUser.getUsername());
         UserEntity userByEmail = userRepository.findByEmail(newUser.getEmail());
 
-        ObjectNode node = (new ObjectMapper()).createObjectNode();
+        Map<String, String> message = new HashMap<>();
 
         if (userByUsername != null && Objects.equals(userByUsername.getUsername(), newUser.getUsername())){
-            return node.put("error", "Username Already exists!");
+            message.put("error", "Username Already exists!");
+            return message;
         } else if (userByEmail != null && Objects.equals(userByEmail.getEmail(), newUser.getEmail())){
-            return node.put("error", "Email Already exists!");
+            message.put("error", "Email Already exists!");
+            return message;
         }
 
         UserEntity createdUser = new UserEntity();
@@ -60,14 +63,15 @@ public class AuthService {
 
         sendConfirmationMail(createdUser.getEmail(), confirmationToken.getConfirmationToken());
 
-        return node.put("success", "User created successfully!");
+        message.put("success", "User created successfully!");
+        return message;
     }
 
     public void sendConfirmationMail(String userMail, String token) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(userMail);
         mailMessage.setSubject("Confirmation Link!");
-        mailMessage.setText("Thank you for registering. Please click on the below link to activate your account. http://localhost:4200/register/confirm?token="+token);
+        mailMessage.setText("Thank you for registering. Please click on the below link to activate your account. "+ GlobalVariable.UI_BASE_URL +"register/confirm?token="+token);
 
         emailSenderService.sendEmail(mailMessage);
     }

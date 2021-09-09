@@ -1,12 +1,16 @@
 package com.medcallapi.controller;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.medcallapi.entity.UserEntity;
 import com.medcallapi.repository.ConfirmationTokenRepository;
 import com.medcallapi.service.ConfirmationTokenService;
 import com.medcallapi.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -20,8 +24,11 @@ public class AuthController {
     @Autowired
     private ConfirmationTokenService confirmationTokenService;
 
-    @PostMapping("/register")
-    public ObjectNode register(@RequestBody UserEntity newUser) {
+    @PostMapping(
+            path = "/register",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public Map<String, String> register(@RequestBody UserEntity newUser) {
        return authService.register(newUser);
     }
 
