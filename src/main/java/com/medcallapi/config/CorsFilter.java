@@ -30,5 +30,4 @@ public class CorsFilter implements Filter {
             chain.doFilter(req, res);
         }
     }
-
 }
