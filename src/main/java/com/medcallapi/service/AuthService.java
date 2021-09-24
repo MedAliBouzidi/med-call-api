@@ -8,9 +8,11 @@ import com.medcallapi.entity.ConfirmationToken;
 import com.medcallapi.entity.UserEntity;
 import com.medcallapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -79,11 +81,10 @@ public class AuthService {
     }
 
     public String login(UserEntity loggingUser) {
-        UserEntity user = userRepository.findByEmailAndPassword(
-                loggingUser.getEmail(),
-                passwordEncoder.encode(loggingUser.getPassword()
-                ));
-        if (user != null) return "success";
+        UserEntity user = userRepository.findByEmail(loggingUser.getEmail());
+
+        if (passwordEncoder.matches(loggingUser.getPassword(), user.getPassword())) return "success";
         else return "error";
     }
+
 }
