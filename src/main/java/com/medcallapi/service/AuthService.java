@@ -24,6 +24,8 @@ public class AuthService {
     @Autowired
     private EmailService emailSenderService;
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public Map<String, String> register(UserEntity newUser) {
         UserEntity userByUsername = userRepository.findByUsername(newUser.getUsername());
         UserEntity userByEmail = userRepository.findByEmail(newUser.getEmail());
@@ -42,7 +44,7 @@ public class AuthService {
         createdUser.setUsername(newUser.getUsername());
         createdUser.setFullName(newUser.getFullName());
         createdUser.setEmail(newUser.getEmail());
-        createdUser.setPassword((new BCryptPasswordEncoder()).encode(newUser.getPassword()));
+        createdUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         createdUser.setUserRole(newUser.getUserRole());
 
         switch (newUser.getUserRole()) {
@@ -74,5 +76,14 @@ public class AuthService {
         mailMessage.setText("Thank you for registering. Please click on the below link to activate your account. "+ GlobalVariable.UI_BASE_URL +"register/confirm?token="+token);
 
         emailSenderService.sendEmail(mailMessage);
+    }
+
+    public String login(UserEntity loggingUser) {
+        UserEntity user = userRepository.findByEmailAndPassword(
+                loggingUser.getEmail(),
+                passwordEncoder.encode(loggingUser.getPassword()
+                ));
+        if (user != null) return "success";
+        else return "error";
     }
 }

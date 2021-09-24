@@ -26,9 +26,11 @@ public class ConfirmationTokenService {
 
     public void confirmUser(ConfirmationToken confirmationToken) {
         final UserEntity user = confirmationToken.getUser();
-        user.setVerified(true);
-        userRepository.save(user);
-        this.deleteConfirmationToken(confirmationToken.getId());
+        if (user != null) {
+            user.setVerified(true);
+            userRepository.save(user);
+            this.deleteConfirmationToken(confirmationToken.getId());
+        }
     }
 
 }

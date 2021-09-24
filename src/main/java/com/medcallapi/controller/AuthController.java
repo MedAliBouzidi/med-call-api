@@ -6,11 +6,9 @@ import com.medcallapi.service.ConfirmationTokenService;
 import com.medcallapi.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -24,12 +22,17 @@ public class AuthController {
     @Autowired
     private ConfirmationTokenService confirmationTokenService;
 
+    @GetMapping(path = "/login")
+    public String login(@RequestBody UserEntity user) {
+        return this.authService.login(user);
+    }
+
     @PostMapping(
             path = "/register",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Map<String, String> register(@RequestBody UserEntity newUser) {
-       return authService.register(newUser);
+       return this.authService.register(newUser);
     }
 
     @DeleteMapping("/register/confirm")
