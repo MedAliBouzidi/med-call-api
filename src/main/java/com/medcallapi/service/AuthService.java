@@ -16,8 +16,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
 @Service
 public class AuthService {
     @Autowired private UserRepository userRepository;
