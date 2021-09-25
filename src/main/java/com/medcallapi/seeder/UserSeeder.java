@@ -1,7 +1,6 @@
 package com.medcallapi.seeder;
 
 import com.medcallapi.entity.UserEntity;
-import com.medcallapi.entity.UserRole;
 import com.medcallapi.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +19,7 @@ public class UserSeeder {
                 "Admin Admin",
                 "admin@admin.com",
                 "$2a$10$aZB1Rc1uVFVxy2dKbdguBurXHJLX1tiz.4gxfzt5H3XrrF53q6uCS", //12345678
-                UserRole.ADMIN,
+                "ADMIN",
                 null,
                 null,
                 null,
@@ -31,7 +30,7 @@ public class UserSeeder {
                 "Dr Med",
                 "dr@dr.com",
                 "$2a$10$aZB1Rc1uVFVxy2dKbdguBurXHJLX1tiz.4gxfzt5H3XrrF53q6uCS", //12345678
-                UserRole.PRO_SANTE,
+                "PRO_SANTE",
                 "some address",
                 "some speciality",
                 23232323L,
@@ -42,7 +41,7 @@ public class UserSeeder {
                 "Patient",
                 "patient@pt.com",
                 "$2a$10$aZB1Rc1uVFVxy2dKbdguBurXHJLX1tiz.4gxfzt5H3XrrF53q6uCS", //12345678
-                UserRole.PATIENT,
+                "PATIENT",
                 null,
                 null,
                 null,

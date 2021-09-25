@@ -3,10 +3,8 @@ package com.medcallapi.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @NoArgsConstructor @Getter
 @ToString
@@ -29,11 +27,14 @@ public class UserEntity {
     @Column(nullable = false, name = "password")
     private String password;
 
-    @Column(name = "user_role")
-    private UserRole userRole;
+    @Column(name = "roles")
+    private String roles;
 
     @Column(name = "verified")
     private Boolean verified = false;
+
+    @Column(name = "active")
+    private Boolean active = true;
 
     @Column(name = "address")
     private String address;
@@ -52,7 +53,7 @@ public class UserEntity {
             String fullName,
             String email,
             String password,
-            UserRole userRole,
+            String roles,
             String address,
             String speciality,
             Long phone,
@@ -62,7 +63,7 @@ public class UserEntity {
         this.fullName = fullName;
         this.email = email;
         this.password = password;
-        this.userRole = userRole;
+        this.roles = roles;
         this.address = address;
         this.speciality = speciality;
         this.phone = phone;
@@ -85,12 +86,16 @@ public class UserEntity {
         this.password = password;
     }
 
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 
     public void setVerified(Boolean verified) {
         this.verified = verified;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public void setAddress(String address) {
@@ -107,18 +112,5 @@ public class UserEntity {
 
     public void setCin(Long cin) {
         this.cin = cin;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        UserEntity user = (UserEntity) o;
-        return Objects.equals(email, user.email) && Objects.equals(password, user.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return 0;
     }
 }

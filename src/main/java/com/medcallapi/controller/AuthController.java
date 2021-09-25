@@ -1,30 +1,29 @@
 package com.medcallapi.controller;
 
 import com.medcallapi.entity.UserEntity;
+import com.medcallapi.request.AuthenticationRequest;
+import com.medcallapi.response.AuthenticationResponse;
 import com.medcallapi.repository.ConfirmationTokenRepository;
 import com.medcallapi.service.ConfirmationTokenService;
 import com.medcallapi.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class AuthController {
-    @Autowired
-    private ConfirmationTokenRepository confirmationTokenRepository;
-
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private ConfirmationTokenService confirmationTokenService;
+    @Autowired private ConfirmationTokenRepository confirmationTokenRepository;
+    @Autowired private AuthService authService;
+    @Autowired private ConfirmationTokenService confirmationTokenService;
 
     @GetMapping(path = "/login")
-    public String login(@RequestBody UserEntity user) {
-        return this.authService.login(user);
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
+        return this.authService.login(authenticationRequest);
     }
 
     @PostMapping(

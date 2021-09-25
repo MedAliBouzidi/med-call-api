@@ -1,30 +1,26 @@
 package com.medcallapi.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.medcallapi.GlobalVariable;
 import com.medcallapi.entity.ConfirmationToken;
 import com.medcallapi.entity.UserEntity;
+import com.medcallapi.request.AuthenticationRequest;
+import com.medcallapi.response.AuthenticationResponse;
 import com.medcallapi.repository.UserRepository;
+import com.medcallapi.utils.JwtUtiles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 public class AuthService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ConfirmationTokenService confirmationTokenService;
-    @Autowired
-    private EmailService emailSenderService;
+    @Autowired private UserRepository userRepository;
+    @Autowired private ConfirmationTokenService confirmationTokenService;
+    @Autowired private EmailService emailSenderService;
+    @Autowired private JwtUtiles jwtUtiles;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -47,13 +43,13 @@ public class AuthService {
         createdUser.setFullName(newUser.getFullName());
         createdUser.setEmail(newUser.getEmail());
         createdUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        createdUser.setUserRole(newUser.getUserRole());
+        createdUser.setRoles(newUser.getRoles());
 
-        switch (newUser.getUserRole()) {
-            case ADMIN:
+        switch (newUser.getRoles()) {
+            case "ADMIN":
                 createdUser.setCin(newUser.getCin());
                 break;
-            case PRO_SANTE:
+            case "PRO_SANTE":
                 createdUser.setAddress(newUser.getAddress());
                 createdUser.setPhone(newUser.getPhone());
                 createdUser.setSpeciality(newUser.getSpeciality());
@@ -80,11 +76,13 @@ public class AuthService {
         emailSenderService.sendEmail(mailMessage);
     }
 
-    public String login(UserEntity loggingUser) {
-        UserEntity user = userRepository.findByEmail(loggingUser.getEmail());
+    public ResponseEntity<AuthenticationResponse> login(AuthenticationRequest authenticationRequest){
+        UserEntity user = userRepository.findByEmail(authenticationRequest.getEmail());
+        if (passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword())) {
+            String jwt = jwtUtiles.generateToken(user);
+            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        }
+        return ResponseEntity.notFound().build();
 
-        if (passwordEncoder.matches(loggingUser.getPassword(), user.getPassword())) return "success";
-        else return "error";
     }
-
 }

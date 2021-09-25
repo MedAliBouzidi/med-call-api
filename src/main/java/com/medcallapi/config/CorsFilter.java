@@ -1,3 +1,4 @@
+/*
 package com.medcallapi.config;
 
 import org.springframework.core.Ordered;
@@ -30,4 +31,4 @@ public class CorsFilter implements Filter {
             chain.doFilter(req, res);
         }
     }
-}
+}*/
