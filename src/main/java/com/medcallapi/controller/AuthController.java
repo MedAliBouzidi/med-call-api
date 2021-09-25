@@ -8,10 +8,8 @@ import com.medcallapi.response.RegistrationResponse;
 import com.medcallapi.service.ConfirmationTokenService;
 import com.medcallapi.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping("/api")
@@ -21,15 +19,12 @@ public class AuthController {
     @Autowired private AuthService authService;
     @Autowired private ConfirmationTokenService confirmationTokenService;
 
-    @GetMapping(path = "/login")
+    @PostMapping(path = "/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
         return this.authService.login(authenticationRequest);
     }
 
-    @PostMapping(
-            path = "/register",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping(path = "/register")
     public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest registrationRequest) {
         return this.authService.register(registrationRequest);
     }

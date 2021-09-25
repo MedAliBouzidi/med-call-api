@@ -33,11 +33,11 @@ public class AuthService {
 
         if (userByUsername != null && userByUsername.getUsername().equals(registrationRequest.getUsername())){
             response.setUsernameExist("Username Already exists!");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
         if (userByEmail != null && userByEmail.getEmail().equals(registrationRequest.getEmail())){
             response.setEmailExist("Email Already exists!");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
         UserEntity createdUser = new UserEntity();
