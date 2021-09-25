@@ -34,7 +34,7 @@ public class UserSeeder {
                 "some address",
                 "some speciality",
                 23232323L,
-                12345678L
+                null
         );
         UserEntity patient = new UserEntity(
                 "patient",
