@@ -4,10 +4,13 @@ import com.medcallapi.GlobalVariable;
 import com.medcallapi.entity.ConfirmationToken;
 import com.medcallapi.entity.UserEntity;
 import com.medcallapi.request.AuthenticationRequest;
+import com.medcallapi.request.RegistrationRequest;
 import com.medcallapi.response.AuthenticationResponse;
 import com.medcallapi.repository.UserRepository;
+import com.medcallapi.response.RegistrationResponse;
 import com.medcallapi.utils.JwtUtiles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,35 +27,36 @@ public class AuthService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public Map<String, String> register(UserEntity newUser) {
-        UserEntity userByUsername = userRepository.findByUsername(newUser.getUsername());
-        UserEntity userByEmail = userRepository.findByEmail(newUser.getEmail());
+    public ResponseEntity<RegistrationResponse> register(RegistrationRequest registrationRequest) {
+        UserEntity userByUsername = userRepository.findByUsername(registrationRequest.getUsername());
+        UserEntity userByEmail = userRepository.findByEmail(registrationRequest.getEmail());
 
-        Map<String, String> message = new HashMap<>();
+        RegistrationResponse response = new RegistrationResponse();
 
-        if (userByUsername != null && Objects.equals(userByUsername.getUsername(), newUser.getUsername())){
-            message.put("error", "Username Already exists!");
-            return message;
-        } else if (userByEmail != null && Objects.equals(userByEmail.getEmail(), newUser.getEmail())){
-            message.put("error", "Email Already exists!");
-            return message;
+        if (userByUsername != null && userByUsername.getUsername().equals(registrationRequest.getUsername())){
+            response.setUsernameExist("Username Already exists!");
+            return ResponseEntity.badRequest().body(response);
+        }
+        if (userByEmail != null && userByEmail.getEmail().equals(registrationRequest.getEmail())){
+            response.setEmailExist("Email Already exists!");
+            return ResponseEntity.badRequest().body(response);
         }
 
         UserEntity createdUser = new UserEntity();
-        createdUser.setUsername(newUser.getUsername());
-        createdUser.setFullName(newUser.getFullName());
-        createdUser.setEmail(newUser.getEmail());
-        createdUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        createdUser.setRoles(newUser.getRoles());
+        createdUser.setUsername(registrationRequest.getUsername());
+        createdUser.setFullName(registrationRequest.getFullName());
+        createdUser.setEmail(registrationRequest.getEmail());
+        createdUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+        createdUser.setRoles(registrationRequest.getRoles());
 
-        switch (newUser.getRoles()) {
+        switch (registrationRequest.getRoles()) {
             case "ADMIN":
-                createdUser.setCin(newUser.getCin());
+                createdUser.setCin(registrationRequest.getCin());
                 break;
             case "PRO_SANTE":
-                createdUser.setAddress(newUser.getAddress());
-                createdUser.setPhone(newUser.getPhone());
-                createdUser.setSpeciality(newUser.getSpeciality());
+                createdUser.setAddress(registrationRequest.getAddress());
+                createdUser.setPhone(registrationRequest.getPhone());
+                createdUser.setSpeciality(registrationRequest.getSpeciality());
                 break;
         }
 
@@ -63,8 +67,8 @@ public class AuthService {
 
         sendConfirmationMail(createdUser.getEmail(), confirmationToken.getConfirmationToken());
 
-        message.put("success", "User created successfully!");
-        return message;
+        response.setSuccess("User created successfully!");
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     public void sendConfirmationMail(String userMail, String token) {
