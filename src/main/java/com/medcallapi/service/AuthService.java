@@ -80,11 +80,12 @@ public class AuthService {
 
     public ResponseEntity<AuthenticationResponse> login(AuthenticationRequest authenticationRequest){
         UserEntity user = userRepository.findByEmail(authenticationRequest.getEmail());
-        if (passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword())) {
+
+        if (user != null && passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword())) {
             String jwt = jwtUtiles.generateToken(user);
             return ResponseEntity.ok(new AuthenticationResponse(jwt));
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
     }
 }
