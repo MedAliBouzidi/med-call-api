@@ -83,7 +83,7 @@ public class AuthService {
 
         if (user != null && passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword())) {
             String jwt = jwtUtiles.generateToken(user);
-            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+            return ResponseEntity.ok(new AuthenticationResponse(user, jwt));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 

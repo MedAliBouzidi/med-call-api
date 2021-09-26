@@ -33,9 +33,6 @@ public class UserEntity {
     @Column(name = "verified")
     private Boolean verified = false;
 
-    @Column(name = "active")
-    private Boolean active = true;
-
     @Column(name = "address")
     private String address;
 
@@ -92,10 +89,6 @@ public class UserEntity {
 
     public void setVerified(Boolean verified) {
         this.verified = verified;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 
     public void setAddress(String address) {
