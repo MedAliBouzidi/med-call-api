@@ -45,9 +45,9 @@ public class AuthService {
         createdUser.setFullName(registrationRequest.getFullName());
         createdUser.setEmail(registrationRequest.getEmail());
         createdUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-        createdUser.setRoles(registrationRequest.getRoles());
+        createdUser.setRole(registrationRequest.getRole());
 
-        switch (registrationRequest.getRoles()) {
+        switch (registrationRequest.getRole()) {
             case "ADMIN":
                 createdUser.setCin(registrationRequest.getCin());
                 break;

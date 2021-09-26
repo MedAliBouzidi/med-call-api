@@ -27,8 +27,8 @@ public class UserEntity {
     @Column(nullable = false, name = "password")
     private String password;
 
-    @Column(name = "roles")
-    private String roles;
+    @Column(name = "role")
+    private String role;
 
     @Column(name = "verified")
     private Boolean verified = false;
@@ -50,7 +50,7 @@ public class UserEntity {
             String fullName,
             String email,
             String password,
-            String roles,
+            String role,
             String address,
             String speciality,
             Long phone,
@@ -60,7 +60,7 @@ public class UserEntity {
         this.fullName = fullName;
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.role = role;
         this.address = address;
         this.speciality = speciality;
         this.phone = phone;
@@ -83,8 +83,8 @@ public class UserEntity {
         this.password = password;
     }
 
-    public void setRoles(String roles) {
-        this.roles = roles;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public void setVerified(Boolean verified) {
