@@ -11,19 +11,20 @@ import com.medcallapi.response.ResetPasswordResponse;
 import com.medcallapi.service.ConfirmationTokenService;
 import com.medcallapi.service.AuthService;
 import com.medcallapi.service.ResetPasswordTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
+@AllArgsConstructor
 public class AuthController {
-    @Autowired private ConfirmationTokenRepository confirmationTokenRepository;
-    @Autowired private ConfirmationTokenService confirmationTokenService;
-    @Autowired private AuthService authService;
-    @Autowired private ResetPasswordTokenService resetPasswordTokenService;
-    @Autowired private ResetPasswordTokenRepository resetPasswordTokenRepository;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final ConfirmationTokenService confirmationTokenService;
+    private final AuthService authService;
+    private final ResetPasswordTokenService resetPasswordTokenService;
+    private final ResetPasswordTokenRepository resetPasswordTokenRepository;
 
     @PostMapping(path = "/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {

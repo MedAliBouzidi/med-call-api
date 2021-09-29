@@ -1,6 +1,5 @@
 package com.medcallapi.service;
 
-import com.medcallapi.GlobalVariable;
 import com.medcallapi.entity.ConfirmationToken;
 import com.medcallapi.entity.ResetPasswordToken;
 import com.medcallapi.entity.UserEntity;
@@ -12,22 +11,21 @@ import com.medcallapi.repository.UserRepository;
 import com.medcallapi.response.RegistrationResponse;
 import com.medcallapi.response.ResetPasswordResponse;
 import com.medcallapi.utils.JwtUtiles;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class AuthService {
-    @Autowired private UserRepository userRepository;
-    @Autowired private ConfirmationTokenService confirmationTokenService;
-    @Autowired private ResetPasswordTokenService resetPasswordTokenService;
-    @Autowired private EmailService emailSenderService;
-    @Autowired private JwtUtiles jwtUtiles;
-
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final UserRepository userRepository;
+    private final ConfirmationTokenService confirmationTokenService;
+    private final ResetPasswordTokenService resetPasswordTokenService;
+    private final EmailService emailSenderService;
+    private final JwtUtiles jwtUtiles;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public ResponseEntity<RegistrationResponse> register(RegistrationRequest registrationRequest) {
         UserEntity userByUsername = userRepository.findByUsername(registrationRequest.getUsername());
@@ -67,7 +65,10 @@ public class AuthService {
         final ConfirmationToken confirmationToken = new ConfirmationToken(createdUser);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        emailSenderService.sendConfirmationMail(createdUser.getEmail(), confirmationToken.getConfirmationToken());
+        emailSenderService.sendConfirmationMail(
+                createdUser.getEmail(),
+                confirmationToken.getConfirmationToken()
+        );
 
         response.setSuccess("User created successfully!");
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

@@ -3,7 +3,6 @@ package com.medcallapi.response;
 import com.medcallapi.entity.UserEntity;
 import lombok.Getter;
 
-
 @Getter
 public class AuthenticationResponse {
 
