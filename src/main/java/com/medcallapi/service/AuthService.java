@@ -2,12 +2,15 @@ package com.medcallapi.service;
 
 import com.medcallapi.GlobalVariable;
 import com.medcallapi.entity.ConfirmationToken;
+import com.medcallapi.entity.ResetPasswordToken;
 import com.medcallapi.entity.UserEntity;
 import com.medcallapi.request.AuthenticationRequest;
 import com.medcallapi.request.RegistrationRequest;
+import com.medcallapi.request.ResetPasswordRequest;
 import com.medcallapi.response.AuthenticationResponse;
 import com.medcallapi.repository.UserRepository;
 import com.medcallapi.response.RegistrationResponse;
+import com.medcallapi.response.ResetPasswordResponse;
 import com.medcallapi.utils.JwtUtiles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     @Autowired private UserRepository userRepository;
     @Autowired private ConfirmationTokenService confirmationTokenService;
+    @Autowired private ResetPasswordTokenService resetPasswordTokenService;
     @Autowired private EmailService emailSenderService;
     @Autowired private JwtUtiles jwtUtiles;
 
@@ -63,19 +67,10 @@ public class AuthService {
         final ConfirmationToken confirmationToken = new ConfirmationToken(createdUser);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        sendConfirmationMail(createdUser.getEmail(), confirmationToken.getConfirmationToken());
+        emailSenderService.sendConfirmationMail(createdUser.getEmail(), confirmationToken.getConfirmationToken());
 
         response.setSuccess("User created successfully!");
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
-    public void sendConfirmationMail(String userMail, String token) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(userMail);
-        mailMessage.setSubject("Confirmation Link!");
-        mailMessage.setText("Thank you for registering. Please click on the below link to activate your account. "+ GlobalVariable.UI_BASE_URL +"register/confirm?token="+token);
-
-        emailSenderService.sendEmail(mailMessage);
     }
 
     public ResponseEntity<AuthenticationResponse> login(AuthenticationRequest authenticationRequest){
@@ -88,4 +83,21 @@ public class AuthService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
     }
+
+    public ResponseEntity<ResetPasswordResponse> resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        UserEntity user = userRepository.findByEmail(resetPasswordRequest.getEmail());
+        ResetPasswordResponse response = new ResetPasswordResponse();
+
+        if (user != null) {
+            final ResetPasswordToken resetPasswordToken = new ResetPasswordToken(user);
+            resetPasswordTokenService.saveResetPasswordToken(resetPasswordToken);
+
+            emailSenderService.sendResetPasswordMail(user.getEmail(), resetPasswordToken.getResetPasswordToken());
+            response.setSuccess("Reset password email was send to your email address!");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+        response.setError(("There is no user linked to this email!"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
 }
