@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+
 @Service
 @AllArgsConstructor
 public class AuthService {
@@ -27,7 +29,7 @@ public class AuthService {
     private final JwtUtiles jwtUtiles;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public ResponseEntity<RegistrationResponse> register(RegistrationRequest registrationRequest) {
+    public ResponseEntity<RegistrationResponse> register(RegistrationRequest registrationRequest) throws MessagingException {
         UserEntity userByUsername = userRepository.findByUsername(registrationRequest.getUsername());
         UserEntity userByEmail = userRepository.findByEmail(registrationRequest.getEmail());
 
@@ -66,7 +68,7 @@ public class AuthService {
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
         emailSenderService.sendConfirmationMail(
-                createdUser.getEmail(),
+                createdUser,
                 confirmationToken.getConfirmationToken()
         );
 
@@ -85,7 +87,7 @@ public class AuthService {
 
     }
 
-    public ResponseEntity<ResetPasswordResponse> resetPassword(ResetPasswordRequest resetPasswordRequest) {
+    public ResponseEntity<ResetPasswordResponse> resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException {
         UserEntity user = userRepository.findByEmail(resetPasswordRequest.getEmail());
         ResetPasswordResponse response = new ResetPasswordResponse();
 
@@ -93,7 +95,7 @@ public class AuthService {
             final ResetPasswordToken resetPasswordToken = new ResetPasswordToken(user);
             resetPasswordTokenService.saveResetPasswordToken(resetPasswordToken);
 
-            emailSenderService.sendResetPasswordMail(user.getEmail(), resetPasswordToken.getResetPasswordToken());
+            emailSenderService.sendResetPasswordMail(user, resetPasswordToken.getResetPasswordToken());
             response.setSuccess("Reset password email was send to your email address!");
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }

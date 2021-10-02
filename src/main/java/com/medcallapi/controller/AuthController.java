@@ -15,6 +15,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
@@ -32,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<RegistrationResponse> register(@RequestBody RegistrationRequest registrationRequest) throws MessagingException {
         return this.authService.register(registrationRequest);
     }
 
@@ -44,7 +46,7 @@ public class AuthController {
     }
 
     @PostMapping(path = "/reset-password")
-    public ResponseEntity<ResetPasswordResponse> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+    public ResponseEntity<ResetPasswordResponse> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws MessagingException {
         return this.authService.resetPassword(resetPasswordRequest);
     }
 
