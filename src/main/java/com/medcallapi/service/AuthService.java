@@ -96,10 +96,10 @@ public class AuthService {
             resetPasswordTokenService.saveResetPasswordToken(resetPasswordToken);
 
             emailSenderService.sendResetPasswordMail(user, resetPasswordToken.getResetPasswordToken());
-            response.setSuccess("Reset password email was send to your email address!");
+            response.setSuccess("Reset password link was send to your email address!");
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
-        response.setError(("There is no user linked to this email!"));
+        response.setError("There is no user linked to this email !");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 

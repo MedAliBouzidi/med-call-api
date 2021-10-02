@@ -53,11 +53,11 @@ public class AuthController {
     @PatchMapping(path = "/reset-password")
     public void updatePassword(
             @RequestParam String token,
-            @RequestBody String password
+            @RequestBody String newPassword
     ) {
         resetPasswordTokenService.updatePassword(
                 resetPasswordTokenRepository.findByResetPasswordToken(token),
-                password
+                newPassword
         );
     }
 }
