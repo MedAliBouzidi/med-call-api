@@ -15,9 +15,7 @@ import java.util.function.Function;
 public class JwtUtiles {
     private final String SECRET_KEY = "secret";
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
+    public String extractUsername(String token) { return extractClaim(token, Claims::getSubject); }
 
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
@@ -28,9 +26,7 @@ public class JwtUtiles {
         return claimsResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(this.SECRET_KEY).parseClaimsJws(token).getBody();
-    }
+    private Claims extractAllClaims(String token) { return Jwts.parser().setSigningKey(this.SECRET_KEY).parseClaimsJws(token).getBody(); }
 
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());

@@ -2,12 +2,12 @@ package com.medcallapi.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@NoArgsConstructor @Getter
-@ToString
+@NoArgsConstructor
+@Getter @Setter
 @Entity
 @Table(name = "users")
 public class UserEntity {
@@ -67,43 +67,4 @@ public class UserEntity {
         this.cin = cin;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public void setVerified(Boolean verified) {
-        this.verified = verified;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
-    }
-
-    public void setPhone(Long phone) {
-        this.phone = phone;
-    }
-
-    public void setCin(Long cin) {
-        this.cin = cin;
-    }
 }
