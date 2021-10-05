@@ -1,12 +1,8 @@
 package com.medcallapi.controller;
 
-import com.medcallapi.entity.Article;
-import com.medcallapi.repository.ArticleRepository;
 import com.medcallapi.response.ArticleResponse;
 import com.medcallapi.service.ArticleService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -4,7 +4,6 @@ import com.medcallapi.entity.Article;
 import com.medcallapi.repository.ArticleRepository;
 import com.medcallapi.response.ArticleResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
