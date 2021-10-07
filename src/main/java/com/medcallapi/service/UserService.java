@@ -41,4 +41,9 @@ public class UserService {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
+    public ResponseEntity<UserResponse> show(String username) {
+        UserEntity user = userRepository.findByUsername(username);
+        return user != null ? ResponseEntity.status(HttpStatus.OK).body(new UserResponse(user)) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 }

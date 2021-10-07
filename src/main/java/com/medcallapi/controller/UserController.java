@@ -15,6 +15,11 @@ public class UserController {
 
     private UserService userService;
 
+    @GetMapping(path = "/{username}")
+    public ResponseEntity<UserResponse> show(@PathVariable String username) {
+        return userService.show(username);
+    }
+
     @PutMapping(path = "/{username}/infos")
     public ResponseEntity<UserResponse> update(
             @PathVariable String username,
