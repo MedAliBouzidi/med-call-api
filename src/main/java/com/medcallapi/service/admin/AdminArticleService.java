@@ -15,9 +15,7 @@ import java.util.Optional;
 public class AdminArticleService {
     private ArticleRepository articleRepository;
 
-    public List<Article> index() {
-        return articleRepository.findAll();
-    }
+    public List<Article> index() { return articleRepository.findAll(); }
 
     public ResponseEntity<Void> toggleValidated(Long id) {
         Optional<Article> article = articleRepository.findById(id);

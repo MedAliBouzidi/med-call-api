@@ -31,9 +31,7 @@ public class CommentService {
         List<CommentResponse> commentResponses = new ArrayList<>();
         if (article.isPresent()) {
             List<Comment> comments = commentRepository.findByArticle(article.get());
-            for (Comment comment : comments) {
-                commentResponses.add(new CommentResponse(comment));
-            }
+            for (Comment comment : comments) { commentResponses.add(new CommentResponse(comment)); }
         }
         return commentResponses;
     }

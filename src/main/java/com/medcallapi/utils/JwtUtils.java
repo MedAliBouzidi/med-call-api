@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtUtiles {
+public class JwtUtils {
     private final String SECRET_KEY = "secret";
 
     public String extractUsername(String token) { return extractClaim(token, Claims::getSubject); }

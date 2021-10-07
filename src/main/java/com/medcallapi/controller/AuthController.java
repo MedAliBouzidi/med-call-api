@@ -40,9 +40,7 @@ public class AuthController {
 
     @DeleteMapping("/register/confirm")
     public void confirmUser(@RequestParam String token) {
-        confirmationTokenService.confirmUser(
-                confirmationTokenRepository.findByConfirmationToken(token)
-        );
+        confirmationTokenService.confirmUser(confirmationTokenRepository.findByConfirmationToken(token));
     }
 
     @PostMapping(path = "/reset-password")
@@ -55,9 +53,6 @@ public class AuthController {
             @RequestParam String token,
             @RequestBody String newPassword
     ) {
-        resetPasswordTokenService.updatePassword(
-                resetPasswordTokenRepository.findByResetPasswordToken(token),
-                newPassword
-        );
+        resetPasswordTokenService.updatePassword(resetPasswordTokenRepository.findByResetPasswordToken(token), newPassword);
     }
 }

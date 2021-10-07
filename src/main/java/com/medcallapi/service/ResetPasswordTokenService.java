@@ -15,9 +15,7 @@ public class ResetPasswordTokenService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    void saveResetPasswordToken(ResetPasswordToken resetPasswordToken) {
-        resetPasswordTokenRepository.save(resetPasswordToken);
-    }
+    void saveResetPasswordToken(ResetPasswordToken resetPasswordToken) { resetPasswordTokenRepository.save(resetPasswordToken); }
 
     void deleteResetPasswordToken(Long id) {
         resetPasswordTokenRepository.deleteById(id);
@@ -25,7 +23,6 @@ public class ResetPasswordTokenService {
 
     public void updatePassword(ResetPasswordToken resetPasswordToken, String newPassword) {
         final UserEntity user = resetPasswordToken.getUser();
-
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         this.deleteResetPasswordToken(resetPasswordToken.getId());

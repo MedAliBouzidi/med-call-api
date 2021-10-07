@@ -12,38 +12,17 @@ import javax.persistence.*;
 @Table(name = "users")
 public class UserEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, name = "username")
-    private String username;
-
-    @Column(nullable = false, name = "full_name")
-    private String fullName;
-
-    @Column(nullable = false, name = "email")
-    private String email;
-
-    @Column(nullable = false, name = "password")
-    private String password;
-
-    @Column(name = "role")
-    private String role;
-
-    @Column(name = "verified")
-    private Boolean verified = false;
-
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "speciality")
-    private String speciality;
-
-    @Column(name = "phone")
-    private Long phone;
-
-    @Column(name = "cin")
-    private Long cin;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
+    @Column(nullable = false, name = "username") private String username;
+    @Column(nullable = false, name = "full_name") private String fullName;
+    @Column(nullable = false, name = "email") private String email;
+    @Column(nullable = false, name = "password") private String password;
+    @Column(name = "role") private String role;
+    @Column(name = "verified") private Boolean verified = false;
+    @Column(name = "address") private String address;
+    @Column(name = "speciality") private String speciality;
+    @Column(name = "phone") private Long phone;
+    @Column(name = "cin") private Long cin;
 
     public UserEntity(
             String username,

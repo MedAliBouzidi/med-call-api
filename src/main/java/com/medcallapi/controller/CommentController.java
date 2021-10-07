@@ -26,25 +26,19 @@ public class CommentController {
     public ResponseEntity<CommentResponse> store(
             @PathVariable Long id,
             @RequestBody CommentRequest commentRequest
-    ) {
-        return commentService.store(id, commentRequest);
-    }
+    ) { return commentService.store(id, commentRequest); }
 
     @PutMapping(path = "/{article_id}/comments/{comment_id}")
     public ResponseEntity<CommentResponse> update(
             @PathVariable Long article_id,
             @PathVariable Long comment_id,
             @RequestBody CommentRequest commentRequest
-            ) {
-        return commentService.update(article_id, comment_id, commentRequest);
-    }
+    ) { return commentService.update(article_id, comment_id, commentRequest); }
 
     @DeleteMapping(path = "/{article_id}/comments/{comment_id}")
     public ResponseEntity<String> destroy(
             @PathVariable Long article_id,
             @PathVariable Long comment_id
-    ) {
-        return commentService.destroy(article_id, comment_id);
-    }
+    ) { return commentService.destroy(article_id, comment_id); }
 
 }

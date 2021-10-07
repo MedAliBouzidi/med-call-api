@@ -2,7 +2,7 @@ package com.medcallapi.filter;
 
 import com.medcallapi.entity.UserEntity;
 import com.medcallapi.repository.UserRepository;
-import com.medcallapi.utils.JwtUtiles;
+import com.medcallapi.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired private UserRepository userRepository;
-    @Autowired private JwtUtiles jwtUtiles;
+    @Autowired private JwtUtils jwtUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
@@ -33,13 +33,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         // Extract Email
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.split(" ")[1];
-            email = jwtUtiles.extractUsername(jwt);
+            email = jwtUtils.extractUsername(jwt);
         }
 
         // Extract User
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserEntity user = userRepository.findByEmail(email);
-            if (jwtUtiles.validateToken(jwt, user)) {
+            if (jwtUtils.validateToken(jwt, user)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

@@ -13,9 +13,7 @@ public class ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final UserRepository userRepository;
 
-    void saveConfirmationToken(ConfirmationToken confirmationToken) {
-        confirmationTokenRepository.save(confirmationToken);
-    }
+    void saveConfirmationToken(ConfirmationToken confirmationToken) { confirmationTokenRepository.save(confirmationToken); }
 
     void deleteConfirmationToken(Long id) {
         confirmationTokenRepository.deleteById(id);
@@ -23,7 +21,6 @@ public class ConfirmationTokenService {
 
     public void confirmUser(ConfirmationToken confirmationToken) {
         final UserEntity user = confirmationToken.getUser();
-
         user.setVerified(true);
         userRepository.save(user);
         this.deleteConfirmationToken(confirmationToken.getId());

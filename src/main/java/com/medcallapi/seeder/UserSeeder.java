@@ -2,16 +2,14 @@ package com.medcallapi.seeder;
 
 import com.medcallapi.entity.UserEntity;
 import com.medcallapi.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class UserSeeder {
 
     private final UserRepository userRepository;
-
-    public UserSeeder(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public void seedUsersTable() {
         UserEntity admin = new UserEntity(

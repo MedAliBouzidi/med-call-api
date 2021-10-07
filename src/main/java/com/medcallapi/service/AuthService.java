@@ -10,7 +10,7 @@ import com.medcallapi.response.AuthenticationResponse;
 import com.medcallapi.repository.UserRepository;
 import com.medcallapi.response.RegistrationResponse;
 import com.medcallapi.response.ResetPasswordResponse;
-import com.medcallapi.utils.JwtUtiles;
+import com.medcallapi.utils.JwtUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class AuthService {
     private final ConfirmationTokenService confirmationTokenService;
     private final ResetPasswordTokenService resetPasswordTokenService;
     private final EmailService emailSenderService;
-    private final JwtUtiles jwtUtiles;
+    private final JwtUtils jwtUtils;
     private final BCryptPasswordEncoder passwordEncoder;
 
     public ResponseEntity<RegistrationResponse> register(RegistrationRequest registrationRequest) throws MessagingException {
@@ -67,10 +67,7 @@ public class AuthService {
         final ConfirmationToken confirmationToken = new ConfirmationToken(createdUser);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        emailSenderService.sendConfirmationMail(
-                createdUser,
-                confirmationToken.getConfirmationToken()
-        );
+        emailSenderService.sendConfirmationMail(createdUser, confirmationToken.getConfirmationToken());
 
         response.setSuccess("User created successfully!");
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -80,11 +77,10 @@ public class AuthService {
         UserEntity user = userRepository.findByEmail(authenticationRequest.getEmail());
 
         if (user != null && passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword())) {
-            String jwt = jwtUtiles.generateToken(user);
+            String jwt = jwtUtils.generateToken(user);
             return ResponseEntity.ok(new AuthenticationResponse(user, jwt));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
     }
 
     public ResponseEntity<ResetPasswordResponse> resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException {

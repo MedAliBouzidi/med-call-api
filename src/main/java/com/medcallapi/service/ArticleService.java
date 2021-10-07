@@ -25,9 +25,7 @@ public class ArticleService {
     public List<ArticleResponse> index() {
         List<Article> articles = articleRepository.findAll();
         List<ArticleResponse> articlesResponse = new ArrayList<>();
-        for (Article article : articles) {
-            articlesResponse.add(new ArticleResponse(article));
-        }
+        for (Article article : articles) { articlesResponse.add(new ArticleResponse(article)); }
         return articlesResponse;
     }
 
@@ -62,7 +60,11 @@ public class ArticleService {
     }
 
     public ResponseEntity<String> destroy(Long id) {
-        articleRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Deleted successfully!");
+        Optional<Article> article = articleRepository.findById(id);
+        if (article.isPresent()) {
+            articleRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Deleted successfully!");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

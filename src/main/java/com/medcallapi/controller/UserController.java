@@ -15,20 +15,16 @@ public class UserController {
 
     private UserService userService;
 
-    @PutMapping(path = "/{username}/inofs")
+    @PutMapping(path = "/{username}/infos")
     public ResponseEntity<UserResponse> update(
             @PathVariable String username,
             @RequestBody UserRequest userRequest
-    ) {
-        return userService.updateInfos(username, userRequest);
-    }
+    ) { return userService.updateInfos(username, userRequest); }
 
     @PatchMapping(path = "/{username}/password")
     public ResponseEntity<UserResponse> update(
             @PathVariable String username,
             @RequestBody String password
-    ) {
-        return userService.updatePassword(username, password);
-    }
+    ) { return userService.updatePassword(username, password); }
 
 }
