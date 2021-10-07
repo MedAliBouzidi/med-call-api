@@ -28,7 +28,7 @@ public class Article {
     private String speciality;
 
     @Column(name = "validated")
-    private boolean validated = false;
+    private boolean validated;
 
     @Column(name = "created_at") @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -44,6 +44,7 @@ public class Article {
         this.title = title;
         this.content = content;
         this.speciality = speciality;
+        this.validated = false;
         this.createdAt = new Date();
         this.updatedAt = new Date();
     }

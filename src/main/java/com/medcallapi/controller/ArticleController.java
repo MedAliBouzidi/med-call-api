@@ -19,7 +19,7 @@ public class ArticleController {
 
     private ArticleService articleService;
 
-    @GetMapping(path = "/")
+    @GetMapping(path = "")
     public List<ArticleResponse> index() {
         return articleService.index();
     }
