@@ -5,13 +5,11 @@ import com.medcallapi.entity.UserEntity;
 import com.medcallapi.repository.ArticleRepository;
 import com.medcallapi.repository.UserRepository;
 import com.medcallapi.request.ArticleRequest;
-import com.medcallapi.response.ArticleResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

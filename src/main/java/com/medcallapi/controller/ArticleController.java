@@ -2,7 +2,6 @@ package com.medcallapi.controller;
 
 import com.medcallapi.entity.Article;
 import com.medcallapi.request.ArticleRequest;
-import com.medcallapi.response.ArticleResponse;
 import com.medcallapi.service.ArticleService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
