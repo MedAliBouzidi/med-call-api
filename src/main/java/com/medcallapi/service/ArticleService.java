@@ -22,12 +22,7 @@ public class ArticleService {
     private ArticleRepository articleRepository;
     private UserRepository userRepository;
 
-    public List<ArticleResponse> index() {
-        List<Article> articles = articleRepository.findAll();
-        List<ArticleResponse> articlesResponse = new ArrayList<>();
-        for (Article article : articles) { articlesResponse.add(new ArticleResponse(article)); }
-        return articlesResponse;
-    }
+    public List<Article> index() { return articleRepository.findAll(); }
 
     public ResponseEntity<Optional<Article>> show(Long id) {
         Optional<Article> article = articleRepository.findById(id);
