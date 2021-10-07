@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +54,7 @@ public class ArticleService {
             article.get().setTitle(articleRequest.getTitle());
             article.get().setContent(articleRequest.getContent());
             article.get().setSpeciality(articleRequest.getSpeciality());
+            article.get().setUpdatedAt(new Date());
             articleRepository.save(article.get());
             return ResponseEntity.status(HttpStatus.OK).body("Updated successfully!");
         }
