@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -24,7 +23,7 @@ public class ArticleController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Optional<Article>> show(@PathVariable Long id) {
+    public ResponseEntity<Article> show(@PathVariable Long id) {
         return articleService.show(id);
     }
 

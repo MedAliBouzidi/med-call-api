@@ -22,9 +22,11 @@ public class ArticleService {
 
     public List<Article> index() { return articleRepository.findAll(); }
 
-    public ResponseEntity<Optional<Article>> show(Long id) {
+    public ResponseEntity<Article> show(Long id) {
         Optional<Article> article = articleRepository.findById(id);
-        return article.isPresent() ? ResponseEntity.status(HttpStatus.OK).body(article) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return article
+                .map(value -> ResponseEntity.status(HttpStatus.OK).body(value))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     public ResponseEntity<String> store(ArticleRequest articleRequest) {
