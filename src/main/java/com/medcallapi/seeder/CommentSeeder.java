@@ -21,7 +21,7 @@ public class CommentSeeder {
     public void seedCommentTable() {
         String[] usernames = {"admin", "doctor", "patient"};
         for (int i = 0; i < 10; i++) {
-            Comment comment = new Comment("this comment number "+i+1);
+            Comment comment = new Comment("this comment number "+(i+1));
             UserEntity user = userRepository.findByUsername(usernames[(int) Math.floor(Math.random()*usernames.length)]);
             Optional<Article> article = articleRepository.findById((long) Math.floor(Math.random()*3+1));
             if (article.isPresent()) {
