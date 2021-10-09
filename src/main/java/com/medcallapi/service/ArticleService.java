@@ -20,7 +20,7 @@ public class ArticleService {
     private ArticleRepository articleRepository;
     private UserRepository userRepository;
 
-    public List<Article> index() { return articleRepository.findAll(); }
+    public List<Article> index() { return articleRepository.findAllByOrderByUpdatedAtDesc(); }
 
     public ResponseEntity<Article> show(Long id) {
         Optional<Article> article = articleRepository.findById(id);
@@ -29,7 +29,7 @@ public class ArticleService {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    public ResponseEntity<String> store(ArticleRequest articleRequest) {
+    public ResponseEntity<Void> store(ArticleRequest articleRequest) {
         UserEntity user = userRepository.findByUsername(articleRequest.getUsername());
         Article article = new Article(
                 articleRequest.getTitle(),
@@ -37,28 +37,30 @@ public class ArticleService {
                 articleRequest.getSpeciality()
         );
         article.setUser(user);
+        if (user.getRole().equals("ADMIN")) article.setValidated(true);
         articleRepository.save(article);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Article added successfully!");
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public ResponseEntity<String> update(ArticleRequest articleRequest, Long id) {
+    public ResponseEntity<Void> update(ArticleRequest articleRequest, Long id) {
         Optional<Article> article = articleRepository.findById(id);
         if (article.isPresent()) {
             article.get().setTitle(articleRequest.getTitle());
             article.get().setContent(articleRequest.getContent());
             article.get().setSpeciality(articleRequest.getSpeciality());
             article.get().setUpdatedAt(new Date());
+            article.get().setValidated(false);
             articleRepository.save(article.get());
-            return ResponseEntity.status(HttpStatus.OK).body("Updated successfully!");
+            return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    public ResponseEntity<String> destroy(Long id) {
+    public ResponseEntity<Void> destroy(Long id) {
         Optional<Article> article = articleRepository.findById(id);
         if (article.isPresent()) {
             articleRepository.deleteById(id);
-            return ResponseEntity.status(HttpStatus.OK).body("Deleted successfully!");
+            return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }

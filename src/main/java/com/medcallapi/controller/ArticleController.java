@@ -28,16 +28,16 @@ public class ArticleController {
     }
 
     @PostMapping(path = "/new")
-    public ResponseEntity<String> store(@RequestBody ArticleRequest articleRequest) { return articleService.store(articleRequest); }
+    public ResponseEntity<Void> store(@RequestBody ArticleRequest articleRequest) { return articleService.store(articleRequest); }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<String> update(
+    public ResponseEntity<Void> update(
             @RequestBody ArticleRequest articleRequest,
             @PathVariable Long id
     ) { return articleService.update(articleRequest, id); }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<String> destroy(@PathVariable Long id) {
+    public ResponseEntity<Void> destroy(@PathVariable Long id) {
         return articleService.destroy(id);
     }
 
